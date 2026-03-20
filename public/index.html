@@ -1384,7 +1384,7 @@
       const init = async () => {
         let data = { notes: [], books: [] }
         try {
-          const response = await fetch("notes.json")
+          const response = await fetch("./notes.json")
           data = await response.json()
         } catch (error) {
           // 当通过 file:// 直接打开时，部分浏览器会阻止 fetch 本地 JSON；
