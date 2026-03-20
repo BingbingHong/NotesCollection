@@ -1,0 +1,22 @@
+* {
+  box-sizing: border-box;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ffffff1a;
+  border-radius: 14px;
+  background: #ffffff0d;
+  padding-right: 15px;
+  padding-left: 15px;
+  width: 50px;
+  height: 34px;
+
+  .icon {
+    flex-grow: 1;
+    width: 16px;
+    height: 16px;
+    overflow: hidden;
+  }
+}
