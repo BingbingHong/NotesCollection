@@ -65,6 +65,11 @@ def parse_notes(lines):
         next_blank = idx + 1 < len(lines) and not lines[idx + 1].strip()
         if not line:
             continue
+            
+        # 过滤掉微信读书导出的“YYYY/MM/DD 发表想法”之类的行
+        if re.match(r"^\d{4}/\d{2}/\d{2}\s+发表想法$", line):
+            last_note = None
+            continue
 
         title_match = re.match(r"^《(.+)》$", line)
         if title_match:
@@ -124,15 +129,22 @@ def parse_notes(lines):
             continue
 
         is_thought, cleaned = extract_thought_text(line)
+        if is_thought:
+            last_note = None
+            continue
+            
         note = {
             "bookTitle": current_book["title"],
             "author": current_book["author"],
             "section": current_section,
-            "text": cleaned if is_thought else line,
-            "kind": "thought" if is_thought else "quote",
+            "text": line,
+            "kind": "quote",
         }
         notes.append(note)
         last_note = note
+
+    # 最后再统一过滤掉被标记为 thought 的笔记（如果有通过 ◆ 前缀进来的）
+    notes = [n for n in notes if n.get("kind") != "thought"]
 
     return books, notes
 
